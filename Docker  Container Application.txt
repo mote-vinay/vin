@@ -1,0 +1,56 @@
+The error message indicates that you cannot remove the `getting-started` image because there is a running or stopped container that is using it. To resolve this, you have a couple of options:
+
+1. **Stop and Remove the Container**:
+   First, find the container using the image. You can list all containers (including stopped ones) with:
+
+  
+   docker ps -a
+   
+
+   Look for the container with ID `3014088d29e5` and note its name or ID. Then stop and remove the container:
+
+   
+   docker stop 3014088d29e5
+   docker rm 3014088d29e5
+   
+
+   After removing the container, you should be able to remove the image:
+
+   
+   docker rmi getting-started
+   
+
+2. **Force Removal of the Image**:
+   If you're sure you want to remove the image and its associated container, you can use the `-f` option to force the removal:
+
+   
+   docker rmi -f getting-started
+   
+
+   This will remove the image even if there are containers that are using it.
+
+
+
+
+
+
+ 1. **Why `127.0.0.1:3000:3000`?
+- **`127.0.0.1`**: This is the loopback address, also known as localhost. It means that the application will only be accessible from your local machine.
+- **`:3000:3000`**: This maps port 3000 on your local machine to port 3000 in the container. 
+  - The first `3000` is the port on your host (your machine).
+  - The second `3000` is the port on the container where your application is listening.
+
+This setup allows you to access your application by visiting `http://127.0.0.1:3000` in your web browser.
+
+ 2. **What does `-dp` mean?
+-d`**: This flag runs the container in detached mode, meaning it runs in the background and does not block your terminal.
+-p`**: This flag maps the ports (as explained above). You can specify which host port maps to which container port.
+
+So, the command `docker run -dp 127.0.0.1:3000:3000 getting-started` means:
+- Run the `getting-started` image as a container in the background.
+- Map port 3000 on your local machine to port 3000 in the container.
+
+
+
+
+

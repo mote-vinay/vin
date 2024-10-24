@@ -1,0 +1,78 @@
+1. Docker Basics
+docker --version: Check your Docker version.
+docker info: Get information about your Docker installation.
+2. Images
+docker pull <image>: Download a Docker image from Docker Hub (e.g., docker pull wordpress).
+docker images: List all downloaded images.
+docker rmi <image>: Remove a specific image.
+3. Containers
+docker run: Start a new container (e.g., docker run -d -p 8080:80 wordpress).
+docker ps: List running containers.
+docker ps -a: List all containers, including stopped ones.
+docker stop <container_id>: Stop a running container.
+docker start <container_id>: Start a stopped container.
+docker rm <container_id>: Remove a stopped container.
+4. Volumes
+Volumes are essential for persistent storage in content management systems.
+
+docker volume create <volume_name>: Create a new volume.
+docker volume ls: List all volumes.
+docker volume rm <volume_name>: Remove a volume.
+docker run -v <volume_name>:<container_path>: Mount a volume to a container (e.g., docker run -d -v wordpress_data:/var/www/html wordpress).
+5. Networks
+Networking allows containers to communicate.
+
+docker network create <network_name>: Create a new network.
+docker network ls: List all networks.
+docker run --network <network_name>: Connect a container to a specific network.
+6. Logs and Monitoring
+docker logs <container_id>: View logs from a specific container.
+docker stats: Display resource usage statistics for running containers.
+7. Docker Compose
+For more complex setups, use Docker Compose.
+
+docker-compose up: Start services defined in a docker-compose.yml file.
+docker-compose down: Stop and remove containers defined in the docker-compose.yml.
+docker-compose logs: View logs for services in a Compose setup.
+Example Workflow for Content Management
+Pull an Image: Start by pulling a CMS image, such as WordPress or Joomla.
+
+
+docker pull wordpress
+
+Create a Volume: Create a volume to persist your content.
+
+docker volume create wordpress_data
+
+Run the Container: Start the CMS container, linking the volume.
+
+
+docker run -d -p 8080:80 -v wordpress_data:/var/www/html --name my_wordpress wordpress
+Access Logs: Monitor your container’s logs.
+
+bash
+Copy code
+docker logs my_wordpress
+Use Docker Compose: For multi-container applications, use Docker Compose.
+
+Create a docker-compose.yml:
+yaml
+Copy code
+version: '3.7'
+services:
+  wordpress:
+    image: wordpress
+    ports:
+      - "8080:80"
+    volumes:
+      - wordpress_data:/var/www/html
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+volumes:
+  wordpress_data:
+Run the setup:
+bash
+Copy code
+docker-compose up
